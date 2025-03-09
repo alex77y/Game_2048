@@ -15,13 +15,19 @@ def merge_list(arr,grid_length):
 def color_gen(value):
 
     base_color = (238, 228, 218)
-    log_value = int(np.log2(value).item()) if value > 0 else 0
+    log_value = np.log2(value).item() if value > 0 else 0
 
-    red = int(min(255, base_color[0] + log_value * 5))
+    red = int(min(200, base_color[0] + log_value * 20))
     green = int(max(0, base_color[1] - log_value * 20))
     blue = int(max(0, base_color[2] - log_value * 20))
     return (red, green, blue)
 
+def finish(grid):
+    for col in range(len(grid)):
+        for row in range(len(grid)):
+            if grid[row][col] >= 2048:
+                return True
+    return False 
 
 def move(grid,direction):
     if direction == 'up':
@@ -55,9 +61,7 @@ def move(grid,direction):
                 if grid[row][col] != 0:
                     vals.append(grid[row][col])
             if vals:
-                print(vals)
                 new_val = merge_list(vals,len(grid))[::-1]
-                print(new_val)
                 for col in range(len(grid)):
                     grid[row][col] = new_val[col]
             else:
